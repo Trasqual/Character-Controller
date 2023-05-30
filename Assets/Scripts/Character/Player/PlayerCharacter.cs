@@ -1,7 +1,13 @@
 
+using DG.Tweening;
+
 public class PlayerCharacter : CharacterBase
 {
     private PlayerInputManager _input;
+    private PlayerStats _stats;
+
+    private bool _canDodge = true;
+    private Tween _dodgeCooldown;
 
     protected override void Awake()
     {
@@ -9,6 +15,7 @@ public class PlayerCharacter : CharacterBase
 
         _input = GetComponent<PlayerInputManager>();
         _stateMachine = _stateMachine as PlayerStateMachine;
+        _stats = GetComponent<PlayerStats>();
 
         _stateMachine.AddState(new PlayerIdleState(_stateMachine));
         _stateMachine.AddState(new PlayerMovementState(_stateMachine));
@@ -27,12 +34,16 @@ public class PlayerCharacter : CharacterBase
 
     private void Dodge()
     {
-        _stateMachine.ChangeState<PlayerDodgeState>();
+        if (_canDodge)
+        {
+            _stateMachine.ChangeState<PlayerDodgeState>();
+            _canDodge = false;
+            _dodgeCooldown = DOVirtual.DelayedCall(_stats.DodgeCooldown, () => _canDodge = true);
+        }
     }
 
     private void Jump()
     {
 
     }
-
 }
