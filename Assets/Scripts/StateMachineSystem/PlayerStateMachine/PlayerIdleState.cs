@@ -17,6 +17,8 @@ public class PlayerIdleState : State, ITransition
 
         _transition.AddTransition(typeof(PlayerMovementState), () => true, () => false);
         _transition.AddTransition(typeof(PlayerDodgeState), () => true, () => true);
+        _transition.AddTransition(typeof(PlayerJumpingState), () => true, () => false);
+        _transition.AddTransition(typeof(PlayerFallingState), () => true, () => false);
     }
 
 

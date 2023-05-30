@@ -42,7 +42,6 @@ public class StateMachine : MonoBehaviour
 
         if (state != null)
         {
-            Debug.Log("Changing State");
             if (_currentState is ITransition transition)
             {
                 if (transition.TryGetTransition(state.GetType(), out var suitableTransition))

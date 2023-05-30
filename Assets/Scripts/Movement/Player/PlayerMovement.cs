@@ -7,6 +7,9 @@ public class PlayerMovement : MovementBase
 
     private CharacterController _controller;
 
+    public Vector3 Velocity => _controller.velocity;
+    public bool IsGrounded => _controller.isGrounded;
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -15,7 +18,7 @@ public class PlayerMovement : MovementBase
 
     public override void Move(Vector3 movementVector, float speed)
     {
-        _controller.Move(speed * Time.deltaTime * movementVector);
+        _controller.Move(Time.deltaTime * new Vector3(movementVector.x * speed, movementVector.y, movementVector.z * speed));
     }
 
     public void Rotate(Vector3 rotationVector, float speed)

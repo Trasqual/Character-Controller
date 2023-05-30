@@ -5,6 +5,7 @@ public class PlayerCharacter : CharacterBase
 {
     private PlayerInputManager _input;
     private PlayerStats _stats;
+    private GravityHandler _gravityHandler;
 
     private bool _canDodge = true;
     private Tween _dodgeCooldown;
@@ -16,10 +17,13 @@ public class PlayerCharacter : CharacterBase
         _input = GetComponent<PlayerInputManager>();
         _stateMachine = _stateMachine as PlayerStateMachine;
         _stats = GetComponent<PlayerStats>();
+        _gravityHandler = GetComponentInChildren<GravityHandler>();
 
         _stateMachine.AddState(new PlayerIdleState(_stateMachine));
         _stateMachine.AddState(new PlayerMovementState(_stateMachine));
         _stateMachine.AddState(new PlayerDodgeState(_stateMachine));
+        _stateMachine.AddState(new PlayerJumpingState(_stateMachine));
+        _stateMachine.AddState(new PlayerFallingState(_stateMachine));
         _stateMachine.ChangeState<PlayerIdleState>();
 
         _input.OnRollPressed += Dodge;
@@ -44,6 +48,9 @@ public class PlayerCharacter : CharacterBase
 
     private void Jump()
     {
-
+        if (_gravityHandler.IsGrounded)
+        {
+            _stateMachine.ChangeState<PlayerJumpingState>();
+        }
     }
 }
