@@ -8,7 +8,7 @@ public class PlayerJumpingState : State, ITransition
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
 
-    private ITransition _transition;
+    private readonly ITransition _transition;
     public List<Transition> Transitions { get; private set; }
 
     public PlayerJumpingState(StateMachine stateMachine) : base(stateMachine)
@@ -28,7 +28,7 @@ public class PlayerJumpingState : State, ITransition
 
     public override void EnterState()
     {
-        _movement.Move(_input.Movement() + new Vector3(0f, _stats.JumpPower, 0f), _stats.MovementSpeed);
+        _movement.ApplyVerticalVelocity(Vector3.up * _stats.JumpPower);
 
     }
 

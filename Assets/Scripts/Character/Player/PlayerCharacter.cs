@@ -5,10 +5,10 @@ public class PlayerCharacter : CharacterBase
 {
     private PlayerInputManager _input;
     private PlayerStats _stats;
-    private GravityHandler _gravityHandler;
+    private PlayerMovement _movement;
 
     private bool _canDodge = true;
-    private Tween _dodgeCooldown;
+    private Tween _dodgeCooldownTween;
 
     protected override void Awake()
     {
@@ -17,7 +17,7 @@ public class PlayerCharacter : CharacterBase
         _input = GetComponent<PlayerInputManager>();
         _stateMachine = _stateMachine as PlayerStateMachine;
         _stats = GetComponent<PlayerStats>();
-        _gravityHandler = GetComponentInChildren<GravityHandler>();
+        _movement = GetComponent<PlayerMovement>();
 
         _stateMachine.AddState(new PlayerIdleState(_stateMachine));
         _stateMachine.AddState(new PlayerMovementState(_stateMachine));
@@ -28,12 +28,6 @@ public class PlayerCharacter : CharacterBase
 
         _input.OnRollPressed += Dodge;
         _input.OnJumpPressed += Jump;
-        _input.OnMovement += Move;
-    }
-
-    private void Move()
-    {
-        _stateMachine.ChangeState<PlayerMovementState>();
     }
 
     private void Dodge()
@@ -42,13 +36,13 @@ public class PlayerCharacter : CharacterBase
         {
             _stateMachine.ChangeState<PlayerDodgeState>();
             _canDodge = false;
-            _dodgeCooldown = DOVirtual.DelayedCall(_stats.DodgeCooldown, () => _canDodge = true);
+            _dodgeCooldownTween = DOVirtual.DelayedCall(_stats.DodgeCooldown, () => _canDodge = true);
         }
     }
 
     private void Jump()
     {
-        if (_gravityHandler.IsGrounded)
+        if (_movement.IsGrounded)
         {
             _stateMachine.ChangeState<PlayerJumpingState>();
         }

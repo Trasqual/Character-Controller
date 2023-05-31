@@ -3,7 +3,9 @@ using System.Collections.Generic;
 public class PlayerFallingState : State, ITransition
 {
     private readonly PlayerStateMachine _playerStateMachine;
+    private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
+    private readonly PlayerStats _stats;
 
     private ITransition _transition;
     public List<Transition> Transitions { get; private set; }
@@ -11,7 +13,9 @@ public class PlayerFallingState : State, ITransition
     public PlayerFallingState(StateMachine stateMachine) : base(stateMachine)
     {
         _playerStateMachine = stateMachine as PlayerStateMachine;
+        _input = _playerStateMachine.Input;
         _movement = _playerStateMachine.Movement;
+        _stats = _playerStateMachine.Stats;
 
         Transitions = new();
         _transition = this;
@@ -32,6 +36,9 @@ public class PlayerFallingState : State, ITransition
 
     public override void UpdateState()
     {
+        _movement.Move(_input.Movement(), _stats.MovementSpeed);
+        _movement.ApplyGravity();
+
         if (_movement.IsGrounded)
         {
             _playerStateMachine.ChangeState<PlayerIdleState>();
