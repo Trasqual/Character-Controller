@@ -41,9 +41,9 @@ public class PlayerJumpingState : State, ITransition
         _movement.Move();
         _movement.ApplyGravity();
 
-        if (_movement.Velocity.y <= 0)
+        if (_movement.IsGrounded)
         {
-            _playerStateMachine.ChangeState<PlayerFallingState>();
+            _playerStateMachine.ChangeState<PlayerIdleState>();
         }
     }
 

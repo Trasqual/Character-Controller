@@ -32,7 +32,6 @@ public class PlayerMovement : MovementBase
 
     public override void Move()
     {
-        Debug.Log(_movementVector);
         _controller.Move(_movementVector);
     }
 
@@ -49,7 +48,7 @@ public class PlayerMovement : MovementBase
 
     public void ApplyGravity()
     {
-        if (IsGrounded && _movementVector.y <= 0)
+        if (IsGrounded && _movementVector.y < 0)
         {
             _movementVector.y = _groundedGravity.y;
         }
