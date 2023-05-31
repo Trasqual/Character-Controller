@@ -14,5 +14,5 @@ public abstract class MovementBase : MonoBehaviour
         _canMove = false;
     }
 
-    public abstract void Move(Vector3 movementVector, float speed);
+    public abstract void Move();
 }

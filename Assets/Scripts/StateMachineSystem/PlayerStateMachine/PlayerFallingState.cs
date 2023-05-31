@@ -36,8 +36,8 @@ public class PlayerFallingState : State, ITransition
 
     public override void UpdateState()
     {
-        _movement.Move(_input.Movement(), _stats.MovementSpeed);
         _movement.ApplyGravity();
+        _movement.Move();
 
         if (_movement.IsGrounded)
         {

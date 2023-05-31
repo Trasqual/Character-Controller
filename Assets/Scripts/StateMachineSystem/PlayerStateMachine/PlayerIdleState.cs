@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerIdleState : State, ITransition
 {
@@ -38,8 +39,9 @@ public class PlayerIdleState : State, ITransition
 
     public override void UpdateState()
     {
-        _movement.Move(_input.Movement(), _stats.MovementSpeed);
+        _movement.SetMoveVelocity(_input.Movement(), _stats.MovementSpeed);
         _movement.ApplyGravity();
+        _movement.Move();
 
         if (_input.Movement().magnitude > 0)
             _playerStateMachine.ChangeState<PlayerMovementState>();

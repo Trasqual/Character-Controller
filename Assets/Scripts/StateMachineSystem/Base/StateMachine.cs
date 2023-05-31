@@ -60,6 +60,8 @@ public class StateMachine : MonoBehaviour
 
                         _currentState = state;
                         _currentState.EnterState();
+
+                        Debug.LogWarning(_currentState.GetType().ToString());
                     }
                 }
             }

@@ -18,16 +18,22 @@ public class PlayerMovement : MovementBase
         }
     }
 
-    private Vector3 _verticalVelocity;
+    private Vector3 _movementVector;
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
     }
 
-    public override void Move(Vector3 movementVector, float speed)
+    public void SetMoveVelocity(Vector3 movementVector, float speed)
     {
-        _controller.Move(Time.deltaTime * ((speed * movementVector) + _verticalVelocity));
+        _movementVector = speed * Time.deltaTime * movementVector;
+    }
+
+    public override void Move()
+    {
+        Debug.Log(_movementVector);
+        _controller.Move(_movementVector);
     }
 
     public void Rotate(Vector3 rotationVector, float speed)
@@ -36,20 +42,20 @@ public class PlayerMovement : MovementBase
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotationVector), speed * Time.deltaTime);
     }
 
-    public void ApplyVerticalVelocity(Vector3 vertVelocity)
+    public void ApplyJumpVelocity(Vector3 vertVelocity)
     {
-        _verticalVelocity += vertVelocity;
+        _movementVector += vertVelocity;
     }
 
     public void ApplyGravity()
     {
-        if (IsGrounded)
+        if (IsGrounded && _movementVector.y <= 0)
         {
-            _verticalVelocity = _groundedGravity;
+            _movementVector.y = _groundedGravity.y;
         }
         else
         {
-            _verticalVelocity += _notGroundedGravity;
+            _movementVector += _notGroundedGravity;
         }
     }
 }
