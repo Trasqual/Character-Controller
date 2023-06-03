@@ -45,7 +45,6 @@ public class TestMovement : MonoBehaviour
     {
         if (_controller.isGrounded && _shouldJump)
         {
-            _movementVector *= 0.5f;
             _movementVector.y = 15f;
             _shouldJump = false;
         }

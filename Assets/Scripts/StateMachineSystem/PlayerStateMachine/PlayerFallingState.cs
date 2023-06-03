@@ -36,6 +36,8 @@ public class PlayerFallingState : State, ITransition
 
     public override void UpdateState()
     {
+        _movement.ApplyMovement(_input.Movement(), _stats.MovementSpeed * _stats.OnAirMovementSpeedModifier);
+        _movement.Rotate(_input.Movement(), _stats.RotationSpeed);
         _movement.ApplyGravity(_stats.GroundedGravity,_stats.OnAirGravity);
         _movement.Move();
 

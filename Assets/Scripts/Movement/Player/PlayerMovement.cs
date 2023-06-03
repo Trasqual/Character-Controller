@@ -57,15 +57,9 @@ public class PlayerMovement : MovementBase
 
     public void ApplyJump(float jumpPower)
     {
-        if (_controller.isGrounded && _shouldJump)
+        if (_controller.isGrounded)
         {
             _movementVector.y = jumpPower;
-            _shouldJump = false;
         }
-    }
-
-    public void Jump()
-    {
-        _shouldJump = true;
     }
 }
