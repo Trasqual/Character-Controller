@@ -9,7 +9,7 @@ public class PlayerMovement : MovementBase
     private CharacterController _controller;
     public Vector3 Velocity => _controller.velocity;
     public bool IsGrounded => _controller.isGrounded;
-    bool _shouldJump;
+    public float LastSpeed { get; private set; }
 
     public Vector3 Gravity
     {
@@ -28,7 +28,7 @@ public class PlayerMovement : MovementBase
 
     public override void Move()
     {
-        _controller.Move(_movementVector*Time.deltaTime);
+        _controller.Move(_movementVector * Time.deltaTime);
     }
 
     public void Rotate(Vector3 rotationVector, float speed)
@@ -37,9 +37,9 @@ public class PlayerMovement : MovementBase
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotationVector), speed * Time.deltaTime);
     }
 
-
     public void ApplyMovement(Vector3 movement, float speed)
     {
+        LastSpeed = speed;
         _movementVector = new Vector3(movement.x * speed, _movementVector.y, movement.z * speed);
     }
 

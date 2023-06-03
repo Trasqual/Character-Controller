@@ -48,6 +48,7 @@ public class PlayerDodgeState : State, ITransition
         if (_dodgeTimer < _stats.DodgeDuration)
         {
             _movement.ApplyMovement(_dodgeDirection, _stats.DodgeCurve.Evaluate(_dodgeTimer / _stats.DodgeDuration) * _stats.DodgeSpeed);
+            _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
             _movement.Move();
         }
         else

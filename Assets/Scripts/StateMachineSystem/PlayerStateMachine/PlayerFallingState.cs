@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerFallingState : State, ITransition
 {
@@ -6,6 +7,7 @@ public class PlayerFallingState : State, ITransition
     private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
+    private Vector3 _initialMovement;
 
     private ITransition _transition;
     public List<Transition> Transitions { get; private set; }
@@ -26,7 +28,8 @@ public class PlayerFallingState : State, ITransition
 
     public override void EnterState()
     {
-
+        _initialMovement = _movement.Velocity.normalized;
+        _initialMovement.y = 0f;
     }
 
     public override void ExitState()
@@ -36,9 +39,9 @@ public class PlayerFallingState : State, ITransition
 
     public override void UpdateState()
     {
-        _movement.ApplyMovement(_input.Movement(), _stats.MovementSpeed * _stats.OnAirMovementSpeedModifier);
+        _movement.ApplyMovement(_initialMovement, _movement.LastSpeed);
         _movement.Rotate(_input.Movement(), _stats.RotationSpeed);
-        _movement.ApplyGravity(_stats.GroundedGravity,_stats.OnAirGravity);
+        _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
         _movement.Move();
 
         if (_movement.IsGrounded)
