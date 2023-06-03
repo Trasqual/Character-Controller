@@ -40,8 +40,8 @@ public class PlayerMovementState : State, ITransition
 
     public override void UpdateState()
     {
-        _movement.SetMoveVelocity(_input.Movement(), _stats.MovementSpeed);
-        _movement.ApplyGravity();
+        _movement.ApplyMovement(_input.Movement(), _stats.MovementSpeed);
+        _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
         _movement.Rotate(_input.Movement(), _stats.RotationSpeed);
         _movement.Move();
 

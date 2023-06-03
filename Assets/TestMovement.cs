@@ -25,8 +25,8 @@ public class TestMovement : MonoBehaviour
 
     private void ApplyMovement()
     {
-        if (_controller.isGrounded)
-            _movementVector = new Vector3(_input.Movement().x * 8f, _movementVector.y, _input.Movement().z * 8f);
+         var speed = _controller.isGrounded ? 8f : 4f;
+            _movementVector = new Vector3(_input.Movement().x * speed, _movementVector.y, _input.Movement().z * speed);
     }
 
     private void ApplyGravity()

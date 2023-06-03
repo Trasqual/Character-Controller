@@ -9,6 +9,7 @@ public class PlayerMovement : MovementBase
     private CharacterController _controller;
     public Vector3 Velocity => _controller.velocity;
     public bool IsGrounded => _controller.isGrounded;
+    bool _shouldJump;
 
     public Vector3 Gravity
     {
@@ -25,14 +26,9 @@ public class PlayerMovement : MovementBase
         _controller = GetComponent<CharacterController>();
     }
 
-    public void SetMoveVelocity(Vector3 movementVector, float speed)
-    {
-        _movementVector = speed * Time.deltaTime * movementVector;
-    }
-
     public override void Move()
     {
-        _controller.Move(_movementVector);
+        _controller.Move(_movementVector*Time.deltaTime);
     }
 
     public void Rotate(Vector3 rotationVector, float speed)
@@ -41,20 +37,35 @@ public class PlayerMovement : MovementBase
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(rotationVector), speed * Time.deltaTime);
     }
 
-    public void ApplyJumpVelocity(Vector3 vertVelocity)
+
+    public void ApplyMovement(Vector3 movement, float speed)
     {
-        _movementVector += vertVelocity;
+        _movementVector = new Vector3(movement.x * speed, _movementVector.y, movement.z * speed);
     }
 
-    public void ApplyGravity()
+    public void ApplyGravity(float groundedGravity, float onAirGravity)
     {
-        if (IsGrounded && _movementVector.y < 0)
+        if (_controller.isGrounded && _movementVector.y < 0f)
         {
-            _movementVector.y = _groundedGravity.y;
+            _movementVector.y = groundedGravity;
         }
         else
         {
-            _movementVector += _notGroundedGravity;
+            _movementVector.y += onAirGravity * Time.deltaTime;
         }
+    }
+
+    public void ApplyJump(float jumpPower)
+    {
+        if (_controller.isGrounded && _shouldJump)
+        {
+            _movementVector.y = jumpPower;
+            _shouldJump = false;
+        }
+    }
+
+    public void Jump()
+    {
+        _shouldJump = true;
     }
 }

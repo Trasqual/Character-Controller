@@ -28,7 +28,7 @@ public class PlayerJumpingState : State, ITransition
 
     public override void EnterState()
     {
-        _movement.ApplyJumpVelocity(Vector3.up * _stats.JumpPower);
+        _movement.ApplyJump(_stats.JumpPower);
     }
 
     public override void ExitState()
@@ -38,9 +38,9 @@ public class PlayerJumpingState : State, ITransition
 
     public override void UpdateState()
     {
+        _movement.ApplyMovement(_input.Movement(), _stats.OnAirMovementSpeedModifier);
+        _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
         _movement.Move();
-        _movement.ApplyGravity();
-
         if (_movement.IsGrounded)
         {
             _playerStateMachine.ChangeState<PlayerIdleState>();
