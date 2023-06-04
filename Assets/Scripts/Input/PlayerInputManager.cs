@@ -36,9 +36,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         var movement = _playerInput.Player.Movement.ReadValue<Vector2>();
 
-        bool shouldUseLookInput = UseMouseMovement && _isRightClickPressed;
-
-        return shouldUseLookInput ? Look() : new Vector3(movement.x, 0f, movement.y);
+        return UseMouseMovement ? Look() : new Vector3(movement.x, 0f, movement.y);
     }
 
     public Vector3 Look()
@@ -57,7 +55,7 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        return look;
+        return UseMouseMovement ? (_isRightClickPressed? look : Vector3.zero) : look;
     }
 
     private void RightClickPressed(InputAction.CallbackContext ctx)
