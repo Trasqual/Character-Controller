@@ -8,7 +8,6 @@ public class PlayerStats : CharacterStats
     public float OnAirGravity = -9.81f;
     public float OnAirMovementSpeedModifier = 0.5f;
     public float JumpPower = 30f;
-    public float DodgeCooldown = 2f;
     public float DodgeDuration = 1f;
     public AnimationCurve DodgeCurve;
 }

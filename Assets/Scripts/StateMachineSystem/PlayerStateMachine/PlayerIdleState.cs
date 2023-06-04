@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +33,7 @@ public class PlayerIdleState : State, ITransition
     public override void EnterState()
     {
         _anim.SetFloat("Movement", 0f);
+        _anim.SetBool("IsGrounded", true);
     }
 
     public override void ExitState()
@@ -48,6 +48,11 @@ public class PlayerIdleState : State, ITransition
 
         if (_input.Movement().magnitude > 0)
             _playerStateMachine.ChangeState<PlayerMovementState>();
+
+        if (_movement.Velocity.y < _stats.GroundedGravity && !_movement.IsGrounded)
+        {
+            _playerStateMachine.ChangeState<PlayerFallingState>();
+        }
     }
 
     public override void CancelState()

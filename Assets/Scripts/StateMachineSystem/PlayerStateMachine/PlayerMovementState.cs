@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +31,7 @@ public class PlayerMovementState : State, ITransition
 
     public override void EnterState()
     {
+        _anim.SetBool("IsGrounded", true);
     }
 
     public override void ExitState()
@@ -50,6 +50,10 @@ public class PlayerMovementState : State, ITransition
         if (_input.Movement() == Vector3.zero)
         {
             _playerStateMachine.ChangeState<PlayerIdleState>();
+        }
+        if (_movement.Velocity.y < _stats.GroundedGravity && !_movement.IsGrounded)
+        {
+            _playerStateMachine.ChangeState<PlayerFallingState>();
         }
     }
 

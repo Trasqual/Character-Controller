@@ -797,12 +797,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 8
   RotationSpeed: 15
-  GroundedGravity: -0.1
+  GroundedGravity: -9.81
   OnAirGravity: -19.62
   OnAirMovementSpeedModifier: 0.5
   JumpPower: 10
-  DodgeCooldown: 2
-  DodgeDuration: 1
+  DodgeDuration: 0.65
   DodgeCurve:
     serializedVersion: 2
     m_Curve:

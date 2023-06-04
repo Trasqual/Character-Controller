@@ -52,13 +52,20 @@ public class PlayerDodgeState : State, ITransition
         if (_dodgeTimer < _stats.DodgeDuration)
         {
             _movement.ApplyMovement(_dodgeDirection, _stats.DodgeCurve.Evaluate(_dodgeTimer / _stats.DodgeDuration) * _stats.MovementSpeed);
-            _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
+            _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity * 2f);
             _movement.Move();
         }
         else
         {
             _dodgeTimer = 0f;
-            _stateMachine.ChangeState<PlayerMovementState>();
+            if (_input.Movement().magnitude > 0)
+            {
+                _stateMachine.ChangeState<PlayerMovementState>();
+            }
+            else
+            {
+                _stateMachine.ChangeState<PlayerIdleState>();
+            }
         }
     }
 
@@ -73,7 +80,7 @@ public class PlayerDodgeState : State, ITransition
         var dodgeAnimTime = 0f;
         for (int i = 0; i < ac.animationClips.Length; i++)
         {
-            if (ac.animationClips[i].name == "BasicMotions@LandRoll01 [RM]")
+            if (ac.animationClips[i].name == "Dodge")
             {
                 dodgeAnimTime = ac.animationClips[i].length;
             }

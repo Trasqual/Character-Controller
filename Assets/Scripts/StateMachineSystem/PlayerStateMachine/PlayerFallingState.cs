@@ -7,6 +7,7 @@ public class PlayerFallingState : State, ITransition
     private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
+    private readonly Animator _anim;
     private Vector3 _initialMovement;
 
     private ITransition _transition;
@@ -18,6 +19,7 @@ public class PlayerFallingState : State, ITransition
         _input = _playerStateMachine.Input;
         _movement = _playerStateMachine.Movement;
         _stats = _playerStateMachine.Stats;
+        _anim = _playerStateMachine.Animator;
 
         Transitions = new();
         _transition = this;
@@ -30,6 +32,7 @@ public class PlayerFallingState : State, ITransition
     {
         _initialMovement = _movement.Velocity.normalized;
         _initialMovement.y = 0f;
+        _anim.SetBool("IsGrounded", false);
     }
 
     public override void ExitState()
@@ -43,6 +46,7 @@ public class PlayerFallingState : State, ITransition
         _movement.Rotate(_input.Movement(), _stats.RotationSpeed);
         _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
         _movement.Move();
+        _anim.SetFloat("VerticalVelocity", _movement.Velocity.y);
 
         if (_movement.IsGrounded)
         {

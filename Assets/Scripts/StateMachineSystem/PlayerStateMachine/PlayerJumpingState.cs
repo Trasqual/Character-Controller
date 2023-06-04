@@ -7,6 +7,8 @@ public class PlayerJumpingState : State, ITransition
     private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
+    private readonly Animator _anim;
+
     private Vector3 _initialMovement;
     private bool _shouldJump;
 
@@ -20,6 +22,7 @@ public class PlayerJumpingState : State, ITransition
         _input = _playerStateMachine.Input;
         _movement = _playerStateMachine.Movement;
         _stats = _playerStateMachine.Stats;
+        _anim = _playerStateMachine.Animator;
 
         Transitions = new();
         _transition = this;
@@ -35,6 +38,7 @@ public class PlayerJumpingState : State, ITransition
         _initialMovement = _input.Movement();
         _movement.ApplyJump(_stats.JumpPower);
         _shouldJump = true;
+        _anim.SetBool("IsGrounded", false);
     }
 
     public override void ExitState()
@@ -54,6 +58,9 @@ public class PlayerJumpingState : State, ITransition
         }
         _shouldJump = false;
         _movement.Move();
+
+        _anim.SetFloat("VerticalVelocity", _movement.Velocity.y);
+
         if (_movement.Velocity.y <= 0)
         {
             _playerStateMachine.ChangeState<PlayerFallingState>();
