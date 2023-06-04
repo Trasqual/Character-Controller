@@ -8,6 +8,7 @@ public class PlayerDodgeState : State, ITransition
     private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
+    private readonly Animator _anim;
 
     private Vector3 _dodgeDirection;
     private float _dodgeTimer;
@@ -21,6 +22,7 @@ public class PlayerDodgeState : State, ITransition
         _input = _playerStateMachine.Input;
         _movement = _playerStateMachine.Movement;
         _stats = _playerStateMachine.Stats;
+        _anim = _playerStateMachine.Animator;
 
         _transition = this;
         Transitions = new();
@@ -34,6 +36,8 @@ public class PlayerDodgeState : State, ITransition
     {
         _dodgeDirection = _input.Movement() == Vector3.zero ? _stateMachine.transform.forward : _input.Movement();
         _stateMachine.transform.rotation = Quaternion.LookRotation(_dodgeDirection);
+        SetDodgeAnimSpeed();
+        _anim.SetTrigger("Dodge");
     }
 
     public override void ExitState()
@@ -61,5 +65,20 @@ public class PlayerDodgeState : State, ITransition
     public override void CancelState()
     {
 
+    }
+
+    private void SetDodgeAnimSpeed()
+    {
+        RuntimeAnimatorController ac = _anim.runtimeAnimatorController;
+        var dodgeAnimTime = 0f;
+        for (int i = 0; i < ac.animationClips.Length; i++)
+        {
+            if (ac.animationClips[i].name == "BasicMotions@LandRoll01 [RM]")
+            {
+                dodgeAnimTime = ac.animationClips[i].length;
+            }
+        }
+
+        _anim.SetFloat("DodgeSpeedMultiplier", dodgeAnimTime / _stats.DodgeDuration);
     }
 }

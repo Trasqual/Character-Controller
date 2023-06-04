@@ -608,11 +608,22 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 9a238f22719c0a64fa299a09192c43b1, type: 2}
+    - target: {fileID: 95787105524477528, guid: 2f3e27eecb190e44a9af50723c394274,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f3e27eecb190e44a9af50723c394274, type: 3}
 --- !u!4 &1197756240 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4580766925885248, guid: 2f3e27eecb190e44a9af50723c394274,
+    type: 3}
+  m_PrefabInstance: {fileID: 1197756239}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1197756241 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 95787105524477528, guid: 2f3e27eecb190e44a9af50723c394274,
     type: 3}
   m_PrefabInstance: {fileID: 1197756239}
   m_PrefabAsset: {fileID: 0}
@@ -854,6 +865,7 @@ MonoBehaviour:
   <Movement>k__BackingField: {fileID: 1434284361}
   <Input>k__BackingField: {fileID: 1434284359}
   <Stats>k__BackingField: {fileID: 1434284360}
+  <Animator>k__BackingField: {fileID: 1197756241}
 --- !u!114 &1434284363
 MonoBehaviour:
   m_ObjectHideFlags: 0

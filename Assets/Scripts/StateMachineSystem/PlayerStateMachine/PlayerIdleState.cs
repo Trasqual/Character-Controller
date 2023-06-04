@@ -8,6 +8,7 @@ public class PlayerIdleState : State, ITransition
     private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
+    private readonly Animator _anim;
 
     public List<Transition> Transitions { get; private set; }
     private readonly ITransition _transition;
@@ -18,6 +19,7 @@ public class PlayerIdleState : State, ITransition
         _input = _playerStateMachine.Input;
         _movement = _playerStateMachine.Movement;
         _stats = _playerStateMachine.Stats;
+        _anim = _playerStateMachine.Animator;
 
         Transitions = new();
         _transition = this;
@@ -31,6 +33,7 @@ public class PlayerIdleState : State, ITransition
 
     public override void EnterState()
     {
+        _anim.SetFloat("Movement", 0f);
     }
 
     public override void ExitState()

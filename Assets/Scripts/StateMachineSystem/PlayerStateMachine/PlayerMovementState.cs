@@ -8,6 +8,7 @@ public class PlayerMovementState : State, ITransition
     private readonly PlayerInputManager _input;
     private readonly PlayerMovement _movement;
     private readonly PlayerStats _stats;
+    private readonly Animator _anim;
 
     private ITransition _transition;
     public List<Transition> Transitions { get; private set; }
@@ -18,6 +19,7 @@ public class PlayerMovementState : State, ITransition
         _input = _playerStateMachine.Input;
         _movement = _playerStateMachine.Movement;
         _stats = _playerStateMachine.Stats;
+        _anim = _playerStateMachine.Animator;
 
         Transitions = new();
         _transition = this;
@@ -30,7 +32,6 @@ public class PlayerMovementState : State, ITransition
 
     public override void EnterState()
     {
-
     }
 
     public override void ExitState()
@@ -40,6 +41,7 @@ public class PlayerMovementState : State, ITransition
 
     public override void UpdateState()
     {
+        _anim.SetFloat("Movement", Vector3.Dot(_input.Movement(), _stateMachine.transform.forward), 0.1f, Time.deltaTime);
         _movement.ApplyMovement(_input.Movement(), _stats.MovementSpeed);
         _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
         _movement.Rotate(_input.Movement(), _stats.RotationSpeed);
