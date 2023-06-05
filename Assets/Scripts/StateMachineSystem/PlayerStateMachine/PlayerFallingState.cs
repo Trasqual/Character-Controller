@@ -53,7 +53,7 @@ public class PlayerFallingState : State, ITransition
 
         if (_movement.IsGrounded)
         {
-            var fallDistance = Vector3.Distance(_initialPosition, _movement.transform.position);
+            var fallDistance = _initialPosition.y - _movement.transform.position.y;
             if (fallDistance >= _stats.LandingDistance)
             {
                 _playerStateMachine.ChangeState<PlayerLandingState>();

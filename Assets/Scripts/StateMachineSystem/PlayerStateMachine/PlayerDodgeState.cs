@@ -27,8 +27,9 @@ public class PlayerDodgeState : State, ITransition
         _transition = this;
         Transitions = new();
 
-        _transition.AddTransition(typeof(PlayerIdleState), () => _dodgeTimer <= 0, () => false);
-        _transition.AddTransition(typeof(PlayerMovementState), () => _dodgeTimer <= 0, () => false);
+        _transition.AddTransition(typeof(PlayerIdleState), () => _dodgeTimer <= 0f, () => false);
+        _transition.AddTransition(typeof(PlayerMovementState), () => _dodgeTimer <= 0f, () => false);
+        _transition.AddTransition(typeof(PlayerFallingState), () => _dodgeTimer <= 0f, () => false);
     }
 
 
@@ -36,7 +37,7 @@ public class PlayerDodgeState : State, ITransition
     {
         _dodgeDirection = _input.Movement() == Vector3.zero ? _stateMachine.transform.forward : _input.Movement().normalized;
         _stateMachine.transform.rotation = Quaternion.LookRotation(_dodgeDirection);
-        SetDodgeAnimSpeed();
+        SetAnimSpeed("Dodge", "DodgeSpeedMultiplier", _stats.DodgeDuration);
         _anim.SetTrigger("Dodge");
     }
 
@@ -58,13 +59,22 @@ public class PlayerDodgeState : State, ITransition
         else
         {
             _dodgeTimer = 0f;
-            if (_input.Movement().magnitude > 0)
+
+            if (!_movement.IsGrounded)
             {
-                _stateMachine.ChangeState<PlayerMovementState>();
+                _stateMachine.ChangeState<PlayerFallingState>();
             }
             else
             {
-                _stateMachine.ChangeState<PlayerIdleState>();
+
+                if (_input.Movement().magnitude > 0)
+                {
+                    _stateMachine.ChangeState<PlayerMovementState>();
+                }
+                else
+                {
+                    _stateMachine.ChangeState<PlayerIdleState>();
+                }
             }
         }
     }
@@ -74,18 +84,18 @@ public class PlayerDodgeState : State, ITransition
 
     }
 
-    private void SetDodgeAnimSpeed()
+    private void SetAnimSpeed(string animName, string speedMultiplier, float value)
     {
         RuntimeAnimatorController ac = _anim.runtimeAnimatorController;
         var dodgeAnimTime = 0f;
         for (int i = 0; i < ac.animationClips.Length; i++)
         {
-            if (ac.animationClips[i].name == "Dodge")
+            if (ac.animationClips[i].name == animName)
             {
                 dodgeAnimTime = ac.animationClips[i].length;
             }
         }
 
-        _anim.SetFloat("DodgeSpeedMultiplier", dodgeAnimTime / _stats.DodgeDuration);
+        _anim.SetFloat(speedMultiplier, dodgeAnimTime / value);
     }
 }

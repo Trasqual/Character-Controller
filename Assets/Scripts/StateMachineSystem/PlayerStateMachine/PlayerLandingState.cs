@@ -24,6 +24,7 @@ public class PlayerLandingState : State, ITransition
         Transitions = new();
         _transition = this;
 
+        _transition.AddTransition(typeof(PlayerIdleState), () => true, () => false);
         _transition.AddTransition(typeof(PlayerMovementState), () => true, () => false);
         _transition.AddTransition(typeof(PlayerDodgeState), () => true, () => true);
     }
@@ -36,7 +37,10 @@ public class PlayerLandingState : State, ITransition
     public override void EnterState()
     {
         _movement.ApplyMovement(Vector3.zero, 0f);
+        _anim.SetFloat("Movement", 0f);
+        SetAnimSpeed("Landing", "LandingSpeedMultiplier", _stats.LandingDuration);
         _anim.SetTrigger("Landing");
+        _anim.SetBool("IsGrounded", true);
         _landingDurationTween = DOVirtual.DelayedCall(_stats.LandingDuration, () => _playerStateMachine.ChangeState<PlayerIdleState>());
     }
 
@@ -48,5 +52,20 @@ public class PlayerLandingState : State, ITransition
     {
         _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
         _movement.Move();
+    }
+
+    private void SetAnimSpeed(string animName, string speedMultiplier, float value)
+    {
+        RuntimeAnimatorController ac = _anim.runtimeAnimatorController;
+        var animTime = 0f;
+        for (int i = 0; i < ac.animationClips.Length; i++)
+        {
+            if (ac.animationClips[i].name == animName)
+            {
+                animTime = ac.animationClips[i].length;
+            }
+        }
+
+        _anim.SetFloat(speedMultiplier, animTime / value);
     }
 }
