@@ -34,7 +34,7 @@ public class PlayerDodgeState : State, ITransition
 
     public override void EnterState()
     {
-        _dodgeDirection = _input.Movement() == Vector3.zero ? _stateMachine.transform.forward : _input.Movement();
+        _dodgeDirection = _input.Movement() == Vector3.zero ? _stateMachine.transform.forward : _input.Movement().normalized;
         _stateMachine.transform.rotation = Quaternion.LookRotation(_dodgeDirection);
         SetDodgeAnimSpeed();
         _anim.SetTrigger("Dodge");
