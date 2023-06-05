@@ -18,6 +18,7 @@ public class PlayerCharacter : CharacterBase
         _stateMachine.AddState(new PlayerDodgeState(_stateMachine));
         _stateMachine.AddState(new PlayerJumpingState(_stateMachine));
         _stateMachine.AddState(new PlayerFallingState(_stateMachine));
+        _stateMachine.AddState(new PlayerLandingState(_stateMachine));
         _stateMachine.ChangeState<PlayerIdleState>();
 
         _input.OnRollPressed += Dodge;
