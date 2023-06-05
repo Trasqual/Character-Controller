@@ -9,6 +9,7 @@ public class PlayerFallingState : State, ITransition
     private readonly PlayerStats _stats;
     private readonly Animator _anim;
     private Vector3 _initialMovement;
+    private Vector3 _initialPosition;
 
     private ITransition _transition;
     public List<Transition> Transitions { get; private set; }
@@ -26,10 +27,12 @@ public class PlayerFallingState : State, ITransition
 
         _transition.AddTransition(typeof(PlayerIdleState), () => true, () => false);
         _transition.AddTransition(typeof(PlayerMovementState), () => true, () => false);
+        _transition.AddTransition(typeof(PlayerLandingState), () => true, () => false);
     }
 
     public override void EnterState()
     {
+        _initialPosition = _movement.transform.position;
         _initialMovement = _movement.Velocity.normalized;
         _initialMovement.y = 0f;
         _anim.SetBool("IsGrounded", false);
@@ -50,7 +53,19 @@ public class PlayerFallingState : State, ITransition
 
         if (_movement.IsGrounded)
         {
-            _playerStateMachine.ChangeState<PlayerIdleState>();
+            var fallDistance = Vector3.Distance(_initialPosition, _movement.transform.position);
+            if (fallDistance >= _stats.LandingDistance)
+            {
+                _playerStateMachine.ChangeState<PlayerLandingState>();
+            }
+            else if (_input.Movement().magnitude > 0)
+            {
+                _playerStateMachine.ChangeState<PlayerMovementState>();
+            }
+            else
+            {
+                _playerStateMachine.ChangeState<PlayerIdleState>();
+            }
         }
     }
 

@@ -10,4 +10,7 @@ public class PlayerStats : CharacterStats
     public float JumpPower = 30f;
     public float DodgeDuration = 1f;
     public AnimationCurve DodgeCurve;
+
+    public float LandingDuration = 1.5f;
+    public float LandingDistance = 10f;
 }
