@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028353, g: 0.22571383, b: 0.30692253, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 228050755}
   - component: {fileID: 228050754}
   - component: {fileID: 228050753}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 562480680}
   - component: {fileID: 562480679}
   - component: {fileID: 562480678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 724653063}
   - component: {fileID: 724653062}
   - component: {fileID: 724653066}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 934243904}
   - component: {fileID: 934243903}
   - component: {fileID: 934243902}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -818,7 +818,7 @@ GameObject:
   - component: {fileID: 1085952503}
   - component: {fileID: 1085952502}
   - component: {fileID: 1085952501}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1153,6 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 8
   RotationSpeed: 15
+  SlopeSlideSpeed: 100
   GroundedGravity: -9.81
   OnAirGravity: -19.62
   OnAirMovementSpeedModifier: 0.5
@@ -1206,8 +1207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e24c93b577d495782e40e619db8e3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundedGravity: {x: 0, y: -0.1, z: 0}
-  _notGroundedGravity: {x: 0, y: -10, z: 0}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &1434284362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1364,7 +1366,7 @@ GameObject:
   - component: {fileID: 1525737514}
   - component: {fileID: 1525737513}
   - component: {fileID: 1525737512}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

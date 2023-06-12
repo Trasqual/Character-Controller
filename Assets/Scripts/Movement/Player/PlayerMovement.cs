@@ -5,8 +5,7 @@ namespace Scripts.MovementSystem
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement : MovementBase
     {
-        [SerializeField] private Vector3 _groundedGravity = new Vector3(0f, -0.1f, 0f);
-        [SerializeField] private Vector3 _notGroundedGravity = new Vector3(0f, -9.81f, 0f);
+        [SerializeField] private LayerMask _groundLayer;
 
         private CharacterController _controller;
 
@@ -15,14 +14,6 @@ namespace Scripts.MovementSystem
         public float LastSpeed { get; private set; }
 
         private Vector3 _slopeHitNormal;
-
-        public Vector3 Gravity
-        {
-            get
-            {
-                return IsGrounded ? _groundedGravity : _notGroundedGravity;
-            }
-        }
 
         private Vector3 _movementVector;
 
@@ -72,6 +63,7 @@ namespace Scripts.MovementSystem
         {
             if (ShouldSlide)
             {
+                if (_controller.velocity.z > 0) slopeSpeed *= 3f;
                 _movementVector += new Vector3(_slopeHitNormal.x, -_slopeHitNormal.y, _slopeHitNormal.z) * slopeSpeed;
             }
         }
@@ -80,7 +72,7 @@ namespace Scripts.MovementSystem
         {
             get
             {
-                if (_controller.isGrounded && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.2f))
+                if (_controller.isGrounded && Physics.SphereCast(transform.position + Vector3.up * 0.5f, _controller.radius * 0.95f, Vector3.down, out RaycastHit hit, 1.5f, _groundLayer))
                 {
                     _slopeHitNormal = hit.normal;
                     return Vector3.Angle(_slopeHitNormal, Vector3.up) > _controller.slopeLimit;
