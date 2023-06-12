@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 8
   RotationSpeed: 15
-  SlopeSlideSpeed: 100
+  SlopeSlideSpeed: 8
   GroundedGravity: -9.81
   OnAirGravity: -19.62
   OnAirMovementSpeedModifier: 0.5
