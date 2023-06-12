@@ -1,25 +1,24 @@
-using DG.Tweening;
+using System.Collections.Generic;
 using Scripts.MovementSystem;
 using Scripts.StateMachineSystem.Transitions;
 using Scripts.StatSystem;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.StateMachineSystem.States
 {
-    public class PlayerLandingState : State, ITransition
+    public class PlayerDamageTakenState : State, ITransition
     {
-        private readonly PlayerStateMachine _playerStateMachine;
+        protected PlayerStateMachine _playerStateMachine;
         private readonly PlayerMovement _movement;
         private readonly PlayerStats _stats;
         private readonly Animator _anim;
 
+        private float _damageTakenTimer;
+
         public List<Transition> Transitions { get; private set; }
         private readonly ITransition _transition;
 
-        private Tween _landingDurationTween;
-
-        public PlayerLandingState(StateMachine stateMachine) : base(stateMachine)
+        public PlayerDamageTakenState(StateMachine stateMachine) : base(stateMachine)
         {
             _playerStateMachine = stateMachine as PlayerStateMachine;
             _movement = _playerStateMachine.Movement;
@@ -30,34 +29,37 @@ namespace Scripts.StateMachineSystem.States
             _transition = this;
 
             _transition.AddTransition(typeof(PlayerIdleState), () => true, () => false);
-            _transition.AddTransition(typeof(PlayerMovementState), () => true, () => false);
-            _transition.AddTransition(typeof(PlayerDodgeState), () => true, () => true);
-            _transition.AddTransition(typeof(PlayerDamageTakenState), () => true, () => true);
-        }
-
-        public override void CancelState()
-        {
-            _landingDurationTween?.Kill();
         }
 
         public override void EnterState()
         {
-            _movement.ApplyMovement(Vector3.zero, 0f);
-            _anim.SetFloat("Movement", 0f);
-            SetAnimSpeed("Landing", "LandingSpeedMultiplier", _stats.LandingDuration);
-            _anim.SetTrigger("Landing");
-            _anim.SetBool("IsGrounded", true);
-            _landingDurationTween = DOVirtual.DelayedCall(_stats.LandingDuration, () => _playerStateMachine.ChangeState<PlayerIdleState>());
-        }
-
-        public override void ExitState()
-        {
+            _anim.SetTrigger("DamageTaken");
+            SetAnimSpeed("DamageTaken", "DamageTakenMultiplier", _stats.DamageTakenDuration);
+            _movement.ApplyMovement(Vector3.zero, _stats.MovementSpeed);
+            _damageTakenTimer = 0f;
         }
 
         public override void UpdateState()
         {
+            _damageTakenTimer += Time.deltaTime;
+
             _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
             _movement.Move();
+
+            if (_damageTakenTimer >= _stats.DamageTakenDuration)
+            {
+                _playerStateMachine.ChangeState<PlayerIdleState>();
+            }
+        }
+
+        public override void ExitState()
+        {
+
+        }
+
+        public override void CancelState()
+        {
+
         }
 
         private void SetAnimSpeed(string animName, string speedMultiplier, float value)

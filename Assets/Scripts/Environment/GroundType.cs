@@ -1,6 +1,9 @@
 
-public enum GroundType
+namespace Scripts.Environment
 {
-    Solid,
-    Slippery
+    public enum GroundType
+    {
+        Solid,
+        Slippery
+    }
 }

@@ -1,14 +1,19 @@
+using Scripts.StateMachineSystem;
+using Scripts.StatSystem;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerStateMachine))]
-public class CharacterBase : MonoBehaviour
+namespace Scripts.Characters
 {
-    [field: SerializeField] public CharacterStats Stats { get; private set; }
-
-    protected StateMachine _stateMachine;
-
-    protected virtual void Awake()
+    [RequireComponent(typeof(PlayerStateMachine))]
+    public class CharacterBase : MonoBehaviour
     {
-        _stateMachine = GetComponent<PlayerStateMachine>();
+        [field: SerializeField] public CharacterStats Stats { get; private set; }
+
+        protected StateMachine _stateMachine;
+
+        protected virtual void Awake()
+        {
+            _stateMachine = GetComponent<PlayerStateMachine>();
+        }
     }
 }

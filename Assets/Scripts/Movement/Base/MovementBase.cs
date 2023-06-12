@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public abstract class MovementBase : MonoBehaviour
+namespace Scripts.MovementSystem
 {
-    protected bool _canMove;
-
-    public void EnableMovement()
+    public abstract class MovementBase : MonoBehaviour
     {
-        _canMove = true;
-    }
+        protected bool _canMove;
 
-    public void DisableMovement()
-    {
-        _canMove = false;
-    }
+        public void EnableMovement()
+        {
+            _canMove = true;
+        }
 
-    public abstract void Move();
+        public void DisableMovement()
+        {
+            _canMove = false;
+        }
+
+        public abstract void Move();
+    }
 }

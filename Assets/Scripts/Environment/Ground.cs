@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class Ground : MonoBehaviour
+namespace Scripts.Environment
 {
-    [field: SerializeField] public GroundType GroundType { get; private set; }
+    public class Ground : MonoBehaviour
+    {
+        [field: SerializeField] public GroundType GroundType { get; private set; }
+    }
 }

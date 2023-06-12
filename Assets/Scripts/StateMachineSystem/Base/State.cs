@@ -1,14 +1,17 @@
 
-public abstract class State
+namespace Scripts.StateMachineSystem.States
 {
-    protected StateMachine _stateMachine;
-
-    public State(StateMachine stateMachine)
+    public abstract class State
     {
-        _stateMachine = stateMachine;
+        protected StateMachine _stateMachine;
+
+        public State(StateMachine stateMachine)
+        {
+            _stateMachine = stateMachine;
+        }
+        public abstract void EnterState();
+        public abstract void UpdateState();
+        public abstract void ExitState();
+        public abstract void CancelState();
     }
-    public abstract void EnterState();
-    public abstract void UpdateState();
-    public abstract void ExitState();
-    public abstract void CancelState();
 }

@@ -2,38 +2,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public interface ITransition
+namespace Scripts.StateMachineSystem.Transitions
 {
-    public List<Transition> Transitions { get; }
-
-    public Transition GetTransition(Type to)
+    public interface ITransition
     {
-        return Transitions.FirstOrDefault(elem => elem.To == to);
-    }
+        public List<Transition> Transitions { get; }
 
-    public void AddTransition(Type to, Func<bool> condition, Func<bool> shouldOverride)
-    {
-        Transitions.Add(new Transition(to, condition, shouldOverride));
-    }
-
-    public void RemoveTransition(Type to)
-    {
-        var targetTransition = Transitions.FirstOrDefault(elem => elem.To == to);
-        Transitions.Remove(targetTransition);
-    }
-
-    public bool TryGetTransition(Type to, out Transition targetTransition)
-    {
-        foreach (var transition in Transitions)
+        public Transition GetTransition(Type to)
         {
-            if (transition.To == to)
-            {
-                targetTransition = transition;
-                return true;
-            }
+            return Transitions.FirstOrDefault(elem => elem.To == to);
         }
 
-        targetTransition = null;
-        return false;
+        public void AddTransition(Type to, Func<bool> condition, Func<bool> shouldOverride)
+        {
+            Transitions.Add(new Transition(to, condition, shouldOverride));
+        }
+
+        public void RemoveTransition(Type to)
+        {
+            var targetTransition = Transitions.FirstOrDefault(elem => elem.To == to);
+            Transitions.Remove(targetTransition);
+        }
+
+        public bool TryGetTransition(Type to, out Transition targetTransition)
+        {
+            foreach (var transition in Transitions)
+            {
+                if (transition.To == to)
+                {
+                    targetTransition = transition;
+                    return true;
+                }
+            }
+
+            targetTransition = null;
+            return false;
+        }
     }
 }

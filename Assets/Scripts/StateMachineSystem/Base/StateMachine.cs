@@ -1,80 +1,85 @@
 using System.Collections.Generic;
 using System.Linq;
+using Scripts.StateMachineSystem.States;
+using Scripts.StateMachineSystem.Transitions;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+namespace Scripts.StateMachineSystem
 {
-    private readonly List<State> _states = new();
-
-    private State _currentState;
-
-    public void AddState(State state)
+    public class StateMachine : MonoBehaviour
     {
-        if (!_states.Contains(state))
-            _states.Add(state);
-    }
+        private readonly List<State> _states = new();
 
-    public void RemoveState<T>() where T : State
-    {
-        var state = GetState<T>();
+        private State _currentState;
 
-        if (state != null)
+        public void AddState(State state)
         {
-            _states.Remove(state);
-        }
-    }
-
-    public void ChangeState<T>() where T : State
-    {
-        var state = GetState<T>();
-
-        if (_currentState != null && _currentState == state)
-        {
-            return;
+            if (!_states.Contains(state))
+                _states.Add(state);
         }
 
-        if (_currentState == null && state != null)
+        public void RemoveState<T>() where T : State
         {
-            _currentState = GetState<T>();
-            _currentState.EnterState();
-            return;
-        }
+            var state = GetState<T>();
 
-        if (state != null)
-        {
-            if (_currentState is ITransition transition)
+            if (state != null)
             {
-                if (transition.TryGetTransition(state.GetType(), out var suitableTransition))
+                _states.Remove(state);
+            }
+        }
+
+        public void ChangeState<T>() where T : State
+        {
+            var state = GetState<T>();
+
+            if (_currentState != null && _currentState == state)
+            {
+                return;
+            }
+
+            if (_currentState == null && state != null)
+            {
+                _currentState = GetState<T>();
+                _currentState.EnterState();
+                return;
+            }
+
+            if (state != null)
+            {
+                if (_currentState is ITransition transition)
                 {
-                    if (suitableTransition.Condition())
+                    if (transition.TryGetTransition(state.GetType(), out var suitableTransition))
                     {
-                        if (suitableTransition.Override())
+                        if (suitableTransition.Condition())
                         {
-                            _currentState.CancelState();
+                            if (suitableTransition.Override())
+                            {
+                                _currentState.CancelState();
+                            }
+                            else
+                            {
+                                _currentState.ExitState();
+                            }
+
+
+                            _currentState = state;
+                            _currentState.EnterState();
+
+                            Debug.LogWarning(_currentState.GetType().ToString());
                         }
-                        else
-                        {
-                            _currentState.ExitState();
-                        }
-
-
-                        _currentState = state;
-                        _currentState.EnterState();
-
-                        Debug.LogWarning(_currentState.GetType().ToString());
                     }
                 }
             }
         }
-    }
 
-    private State GetState<T>() where T : State
-    {
-        return _states.OfType<T>().FirstOrDefault();
-    }
+        private State GetState<T>() where T : State
+        {
+            return _states.OfType<T>().FirstOrDefault();
+        }
 
-    private void Update()
-    {
-        _currentState?.UpdateState();
+        private void Update()
+        {
+            _currentState?.UpdateState();
+        }
     }
 }

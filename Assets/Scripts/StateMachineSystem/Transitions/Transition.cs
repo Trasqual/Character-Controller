@@ -1,16 +1,19 @@
 using System;
 
-public class Transition
+namespace Scripts.StateMachineSystem.Transitions
 {
-    public Type To;
-    public Func<bool> Condition;
-    public Func<bool> Override;
-
-    public Transition(Type to, Func<bool> condition, Func<bool> shouldOverride)
+    public class Transition
     {
-        To = to;
-        Condition = condition;
-        Override = shouldOverride;
+        public Type To;
+        public Func<bool> Condition;
+        public Func<bool> Override;
+
+        public Transition(Type to, Func<bool> condition, Func<bool> shouldOverride)
+        {
+            To = to;
+            Condition = condition;
+            Override = shouldOverride;
+        }
     }
 }
 

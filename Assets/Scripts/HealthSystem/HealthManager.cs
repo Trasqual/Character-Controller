@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Scripts.StatSystem
+namespace Scripts.HealthSystem
 {
-    public class CharacterStats : MonoBehaviour
+    public class HealthManager : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
