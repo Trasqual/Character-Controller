@@ -7,6 +7,7 @@ namespace Scripts.StatSystem
         [Header("Movement")]
         public float MovementSpeed = 8f;
         public float RotationSpeed = 15f;
+        public float SlopeSlideSpeed = 10f;
 
         [Header("Gravity")]
         public float GroundedGravity = -0.1f;

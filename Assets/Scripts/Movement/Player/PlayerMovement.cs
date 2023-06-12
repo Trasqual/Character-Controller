@@ -9,9 +9,12 @@ namespace Scripts.MovementSystem
         [SerializeField] private Vector3 _notGroundedGravity = new Vector3(0f, -9.81f, 0f);
 
         private CharacterController _controller;
+
         public Vector3 Velocity => _controller.velocity;
         public bool IsGrounded => _controller.isGrounded;
         public float LastSpeed { get; private set; }
+
+        private Vector3 _slopeHitNormal;
 
         public Vector3 Gravity
         {
@@ -62,6 +65,30 @@ namespace Scripts.MovementSystem
             if (_controller.isGrounded)
             {
                 _movementVector.y = jumpPower;
+            }
+        }
+
+        public void ApplySlide(float slopeSpeed)
+        {
+            if (ShouldSlide)
+            {
+                _movementVector += new Vector3(_slopeHitNormal.x, -_slopeHitNormal.y, _slopeHitNormal.z) * slopeSpeed;
+            }
+        }
+
+        public bool ShouldSlide
+        {
+            get
+            {
+                if (_controller.isGrounded && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, 1.2f))
+                {
+                    _slopeHitNormal = hit.normal;
+                    return Vector3.Angle(_slopeHitNormal, Vector3.up) > _controller.slopeLimit;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
     }
