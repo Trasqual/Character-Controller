@@ -59,12 +59,16 @@ namespace Scripts.MovementSystem
             }
         }
 
-        public void ApplySlide(float slopeSpeed)
+        public void ApplySlide(float slopeSpeed, Vector3 userInput)
         {
             if (ShouldSlide)
             {
-                if (_controller.velocity.z > 0) slopeSpeed *= 3f;
-                _movementVector += new Vector3(_slopeHitNormal.x, -_slopeHitNormal.y, _slopeHitNormal.z) * slopeSpeed;
+                var slideVector = new Vector3(_slopeHitNormal.x, -_slopeHitNormal.y, _slopeHitNormal.z);
+                var tempSlopeSpeed = slopeSpeed;
+                if (Vector3.Dot(userInput.normalized, slideVector) < 0) tempSlopeSpeed *= 3.25f;
+
+                //var angleFactor = 1f - Mathf.InverseLerp(0, 90, Vector3.Angle(_slopeHitNormal, Vector3.up));
+                _movementVector += tempSlopeSpeed * slideVector;
             }
         }
 

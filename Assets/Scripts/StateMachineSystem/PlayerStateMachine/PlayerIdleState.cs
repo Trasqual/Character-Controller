@@ -51,7 +51,7 @@ namespace Scripts.StateMachineSystem.States
         {
             _movement.ApplyMovement(_input.Movement(), _stats.MovementSpeed);
             _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
-            _movement.ApplySlide(_stats.SlopeSlideSpeed);
+            _movement.ApplySlide(_stats.SlopeSlideSpeed, _input.Movement());
             _movement.Move();
 
             if (_input.Movement().magnitude > 0)

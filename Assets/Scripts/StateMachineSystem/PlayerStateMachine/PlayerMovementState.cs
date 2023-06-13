@@ -51,7 +51,7 @@ namespace Scripts.StateMachineSystem.States
             _anim.SetFloat("Movement", Vector3.Dot(_input.Movement(), _stateMachine.transform.forward), 0.1f, Time.deltaTime);
             _movement.ApplyMovement(_input.Movement(), _stats.MovementSpeed);
             _movement.ApplyGravity(_stats.GroundedGravity, _stats.OnAirGravity);
-            _movement.ApplySlide(_stats.SlopeSlideSpeed);
+            _movement.ApplySlide(_stats.SlopeSlideSpeed, _input.Movement());
             _movement.Rotate(_input.Movement(), _stats.RotationSpeed);
             _movement.Move();
 
