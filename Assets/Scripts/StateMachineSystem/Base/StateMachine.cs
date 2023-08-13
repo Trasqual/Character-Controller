@@ -65,7 +65,7 @@ namespace Scripts.StateMachineSystem
                             _currentState = state;
                             _currentState.EnterState();
 
-                            Debug.LogWarning(_currentState.GetType().ToString());
+                            //Debug.LogWarning(_currentState.GetType().ToString());
                         }
                     }
                 }
