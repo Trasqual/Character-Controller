@@ -76,11 +76,11 @@ namespace Scripts.InputSystem
             playerPos.z = 0f;
             var maxMag = 350f;
             var dir = (Vector3)mousePosition - playerPos;
-            var magFactor = Mathf.Clamp(dir.magnitude, 0f, maxMag) / maxMag;
+            //var magFactor = Mathf.Clamp(dir.magnitude, 0f, maxMag) / maxMag;
             dir.Normalize();
 
             if (UseMouseMovement)
-                dir = dir * magFactor;
+                //dir = dir * magFactor;
 
             dir.z = dir.y;
             dir.y = 0f;

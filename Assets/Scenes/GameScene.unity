@@ -1289,7 +1289,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  LandingDuration: 1.5
+  LandingDuration: 0.5
   LandingDistance: 5
   DamageTakenDuration: 0.5
 --- !u!114 &1434284361
